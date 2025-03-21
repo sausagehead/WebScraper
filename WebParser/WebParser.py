@@ -6,10 +6,8 @@ import json
 
 
 class FlyerParser:
-    """Parser class for extracting supermarket flyers."""
     
     def __init__(self, url):
-        """Initialize the parser with the provided URL."""
         self.url = url
 
     def get_html(self, url):
@@ -104,13 +102,18 @@ class FlyerParser:
 
 
 def save_to_json(data, filename):
-    """Save the flyer data to a JSON file."""
     with open(filename, 'w', encoding='utf-8') as json_file:
         json.dump(data, json_file, ensure_ascii=False, indent=4)
 
+def create_json(data):
+    filename = input("Enter the name of the JSON file to create (without extension): ")
+    if filename and not filename.endswith('.json'):
+        filename += '.json'
+
+    save_to_json(data, filename)
+    print(f"Information has been stored in '{filename}'.")
 
 def main():
-    """Main function to execute the flyer parser."""
     parser = FlyerParser("https://www.prospektmaschine.de/hypermarkte/")
     shop_links = parser.get_shop_links() 
 
@@ -121,9 +124,7 @@ def main():
         item_details = parser.get_shop_details(shop_url, shop_name)  
         all_results.extend(item_details)
 
-    save_to_json(all_results, 'flyer.json')
-    print("Information has been stored in 'flyer.json'.")
-
+    create_json(all_results)
 
 if __name__ == "__main__":
     main()
